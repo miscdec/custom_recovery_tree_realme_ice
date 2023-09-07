@@ -6,6 +6,7 @@
 #
 
 LOCAL_PATH := device/realme/ice
+
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -13,7 +14,6 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
-# A/B
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
     boot \
@@ -26,6 +26,9 @@ AB_OTA_PARTITIONS += \
     odm \
     vbmeta \
     vbmeta_system
+
+# API Level
+PRODUCT_SHIPPING_API_LEVEL := 30
 
 # Boot control HAL
 PRODUCT_PACKAGES += \
