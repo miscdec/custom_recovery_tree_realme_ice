@@ -48,6 +48,11 @@ PRODUCT_PACKAGES += \
     update_verifier \
     update_engine_sideload
 
+#  Health
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.1-impl.recovery \
+    android.hardware.health@2.1-service
+
 # QCom Decryption
 PRODUCT_PACKAGES += \
     qcom_decrypt \
