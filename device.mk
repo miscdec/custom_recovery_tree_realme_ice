@@ -48,6 +48,12 @@ PRODUCT_PACKAGES += \
     update_verifier \
     update_engine_sideload
 
+# QCom Decryption
+PRODUCT_PACKAGES += \
+    qcom_decrypt \
+    qcom_decrypt_fbe
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+
 TARGET_RECOVERY_DEVICE_MODULES += \
     libion \
     libdisplayconfig.qti \
