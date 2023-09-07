@@ -13,6 +13,20 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
+# A/B
+AB_OTA_UPDATER := true
+AB_OTA_PARTITIONS += \
+    boot \
+    dtbo \
+    system \
+    system_ext \
+    product \
+    vendor \
+    vendor_boot \
+    odm \
+    vbmeta \
+    vbmeta_system
+
 # Boot control HAL
 PRODUCT_PACKAGES += \
     bootctrl.lahaina \
