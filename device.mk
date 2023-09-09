@@ -64,6 +64,7 @@ PRODUCT_PACKAGES += \
     qcom_decrypt \
     qcom_decrypt_fbe
 BOARD_USES_QCOM_FBE_DECRYPTION := true
+BOARD_USES_METADATA_PARTITION := true
 
 TARGET_RECOVERY_DEVICE_MODULES += \
     libion \
