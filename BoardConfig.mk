@@ -54,6 +54,9 @@ ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 endif
 
+# LOGD | Debug
+TARGET_USES_LOGD := true
+
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 201326592
 BOARD_HAS_LARGE_FILESYSTEM := true
@@ -105,6 +108,7 @@ TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
 TW_INCLUDE_REPACKTOOLS := true
+TWRP_INCLUDE_LOGCAT := true
 
 # Vendor Modules
 TW_LOAD_VENDOR_MODULES := "msm_drm.ko adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"
