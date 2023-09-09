@@ -48,6 +48,9 @@ PRODUCT_PACKAGES += \
     update_verifier \
     update_engine_sideload
 
+# Dynamic Partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery.fstab:$(TARGET_COPY_OUT_RAMDISK)/etc/recovery.fstab
 
