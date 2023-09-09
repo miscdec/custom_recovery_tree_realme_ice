@@ -48,6 +48,9 @@ PRODUCT_PACKAGES += \
     update_verifier \
     update_engine_sideload
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery.fstab:$(TARGET_COPY_OUT_RAMDISK)/etc/recovery.fstab
+
 #  Health
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl.recovery \
