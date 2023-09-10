@@ -6,6 +6,7 @@
 #
 
 LOCAL_PATH := device/realme/ice
+
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -13,19 +14,33 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
+ENABLE_VIRTUAL_AB := true
+AB_OTA_UPDATER := true
+AB_OTA_PARTITIONS += \
+    boot \
+    dtbo \
+    system \
+    system_ext \
+    product \
+    vendor \
+    vendor_boot \
+    odm \
+    vbmeta \
+    vbmeta_system
+
+# API Level
+PRODUCT_SHIPPING_API_LEVEL := 30
+
 # Boot control HAL
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
-
-PRODUCT_PACKAGES += \
-    bootctrl.lahaina
-
-PRODUCT_STATIC_BOOT_CONTROL_HAL := \
     bootctrl.lahaina \
-    libgptutils \
-    libz \
-    libcutils
+    bootctrl.lahaina.recovery \
+    android.hardware.boot@1.1-impl-qti \
+    android.hardware.boot@1.1-impl-qti.recovery \
+    android.hardware.boot@1.1-service \
+
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl
 
 PRODUCT_PACKAGES += \
     otapreopt_script \
@@ -33,3 +48,36 @@ PRODUCT_PACKAGES += \
     update_engine \
     update_verifier \
     update_engine_sideload
+
+# Dynamic Partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+#  Health
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.1-impl.recovery \
+    android.hardware.health@2.1-service
+
+# QCom Decryption
+PRODUCT_PACKAGES += \
+    qcom_decrypt \
+    qcom_decrypt_fbe
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+BOARD_USES_METADATA_PARTITION := true
+
+TARGET_RECOVERY_DEVICE_MODULES += \
+    libion \
+    strace \
+    debuggerd \
+    libdisplayconfig.qti \
+    vendor.display.config@1.0 \
+    vendor.display.config@2.0 
+
+RECOVERY_LIBRARY_SOURCE_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/libdisplayconfig.qti.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@1.0.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@2.0.so
+    
+# Debugging Configs
+RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd
+RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/strace

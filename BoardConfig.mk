@@ -10,16 +10,6 @@ DEVICE_PATH := device/realme/ice
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
 
-# A/B
-AB_OTA_UPDATER := true
-AB_OTA_PARTITIONS += \
-    system \
-    system_ext \
-    product \
-    vendor \
-    odm
-BOARD_USES_RECOVERY_AS_BOOT := true
-
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -35,8 +25,18 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a75
 
-# APEX
-DEXPREOPT_GENERATE_APEX_IMAGE := true
+# Bootloader
+TARGET_BOOTLOADER_BOARD_NAME := ice
+TARGET_NO_BOOTLOADER := true
+
+# Build Rules
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+BUILD_BROKEN_PREBUILT_ELF_FILES := true
+
+# Crypto
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
 
 # Kernel
 BOARD_BOOT_HEADER_VERSION := 3
@@ -51,44 +51,77 @@ ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 endif
 
+# LOGD | Debug
+TARGET_USES_LOGD := true
+
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 201326592
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 201326592
 BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
-BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-TARGET_COPY_OUT_VENDOR := vendor
-BOARD_SUPER_PARTITION_SIZE := 9126805504 # TODO: Fix hardcoded value
+BOARD_SUPER_PARTITION_SIZE := 11190403072 # TODO: Fix hardcoded value
 BOARD_SUPER_PARTITION_GROUPS := realme_dynamic_partitions
-BOARD_REALME_DYNAMIC_PARTITIONS_PARTITION_LIST := system system system_ext system_ext product product vendor vendor odm odm my_product my_product my_company my_company my_carrier my_carrier my_region my_region my_bigball my_bigball my_heytap my_heytap my_stock my_stock my_preload my_preload my_manifest my_manifest my_engineering my_engineering
-BOARD_REALME_DYNAMIC_PARTITIONS_SIZE := 9122611200 # TODO: Fix hardcoded value
+BOARD_REALME_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor odm
+BOARD_REALME_DYNAMIC_PARTITIONS_SIZE := 5591007232 # TODO: Fix hardcoded value
+
+# Paritions | FS
+BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # Platform
+BOARD_USES_QCOM_HARDWARE := true
 TARGET_BOARD_PLATFORM := $(PRODUCT_PLATFORM)
 
+# Properties
+TARGET_VENDOR_PROP := $(DEVICE_PATH)/vendor.prop
+
 # Recovery
+BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-
-# Security patch level
-VENDOR_SECURITY_PATCH := 2021-08-01
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+TARGET_USES_UEFI := true
+TARGET_USES_MKE2FS := true
+RECOVERY_SDCARD_ON_DATA := true
+BOARD_SUPPRESS_SECURE_ERASE := true
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+BOARD_AVB_VBMETA_SYSTEM := system system_ext product
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
 
-# Hack: prevent anti rollback
+# Security
 PLATFORM_SECURITY_PATCH := 2099-12-31
-VENDOR_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 16.1.0
+VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+
+# Platform
+PLATFORM_VERSION := 99.87.36
+PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
-TW_EXTRA_LANGUAGES := true
-TW_SCREEN_BLANK_ON_BOOT := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_USE_TOOLBOX := true
+TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_REPACKTOOLS := true
+TW_EXTRA_LANGUAGES := true
+TW_INCLUDE_NTFS_3G := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TW_MAX_BRIGHTNESS := 2047
+TW_DEFAULT_BRIGHTNESS := 900
+TW_NO_SCREEN_BLANK := true
+TW_INCLUDE_FUSE_EXFAT := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_EXCLUDE_APEX := true
+TWRP_INCLUDE_LOGCAT := true
+
+# Vendor Modules
+TW_LOAD_VENDOR_MODULES := "msm_drm.ko adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"
+
+# Workaround: Copying vendor files to recovery ramdisk
+TARGET_COPY_OUT_VENDOR := vendor
+TARGET_COPY_OUT_PRODUCT := product

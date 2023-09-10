@@ -9,6 +9,9 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# Inheri virtual A/B OTA stuff
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
+
 # Inherit some common Twrp stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
 
@@ -25,6 +28,6 @@ PRODUCT_PLATFORM := lahaina
 PRODUCT_GMS_CLIENTID_BASE := android-realme
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="RMX3461-user 12 RKQ1.211119.001 1692852866886 release-keys"
+    PRIVATE_BUILD_DESC="RMX3461-user:13 TP1A.220905.001 R.12be919_f765_f764 release-keys"
 
-BUILD_FINGERPRINT := realme/RMX3461/ice:12/RKQ1.211119.001/1692852866886:user/release-keys
+BUILD_FINGERPRINT := realme/RMX3461/RE54BFL1-user:13/TP1A.220905.001/R.12be919_f765_f764/release-keys
