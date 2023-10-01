@@ -14,6 +14,12 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_vendor=true \
+    POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+    FILESYSTEM_TYPE_vendor=ext4 \
+    POSTINSTALL_OPTIONAL_vendor=true
+
 ENABLE_VIRTUAL_AB := true
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
@@ -33,11 +39,9 @@ PRODUCT_SHIPPING_API_LEVEL := 30
 
 # Boot control HAL
 PRODUCT_PACKAGES += \
-    bootctrl.lahaina \
     bootctrl.lahaina.recovery \
-    android.hardware.boot@1.1-impl-qti \
     android.hardware.boot@1.1-impl-qti.recovery \
-    android.hardware.boot@1.1-service \
+    bootctl
 
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
@@ -81,3 +85,5 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
 # Debugging Configs
 RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd
 RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/strace
+
+TWRP_REQUIRED_MODULES += lahaina_firmware

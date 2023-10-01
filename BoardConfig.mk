@@ -25,6 +25,10 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a75
 
+# A/B
+TARGET_NO_RECOVERY := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
+
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := ice
 TARGET_NO_BOOTLOADER := true
@@ -48,7 +52,7 @@ TARGET_KERNEL_SOURCE := kernel/realme/ice
 # Kernel - prebuilt
 TARGET_FORCE_PREBUILT_KERNEL := true
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/ice/kernel
 endif
 
 # LOGD | Debug
